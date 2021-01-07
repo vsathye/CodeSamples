@@ -49,9 +49,9 @@ stop_words = spacy.lang.en.stop_words.STOP_WORDS
 parser = English()
 
 def tokenizer_(phrase):
-    tokens = parser(phrase)
-    tokens = [ word.lemma_.lower().strip() for word in tokens ]
-    tokens = [ word for word in tokens if word not in stop_words and word not in punctuations ]
+    mytokens = parser(phrase)
+    mytokens = [ word.lemma_.lower().strip() for word in tokens ]
+    mytokens = [ word for word in tokens if word not in stop_words and word not in punctuations ]
     return mytokens
 class predictors(TransformerMixin):
     def transform(self, X, **transform_params):
@@ -59,15 +59,15 @@ class predictors(TransformerMixin):
     def fit(self, X, y=None, **fit_params):
         return self
     
-bow_vector = CountVectorizer(tokenizer = tokenizer_, ngram_range=(1,1))
+m_vector = CountVectorizer(tokenizer = tokenizer_, ngram_range=(1,1))
 
-#figures out the accuracy score for a basic logistic regression model on data
+#figures out the accuracy,precision, and recall scores for a basic logistic regression model on data
 for a in df.columns:
     X = df['Label'] 
     ylabels = df[str(a)] 
     X_train, X_test, y_train, y_test = train_test_split(X, ylabels, test_size=0.3)
     classifier = LogisticRegression()
-    pipe = Pipeline([("cleaner", predictors()),('vectorizer', bow_vector),('classifier', classifier)])
+    pipe = Pipeline([("cleaner", predictors()),('vectorizer', m_vector),('classifier', classifier)])
     pipe.fit(X_train,y_train)
     predicted = pipe.predict(X_test)
     corr = 0
