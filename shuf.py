@@ -1,3 +1,5 @@
+#my own implementation of the linux command "shuf" it supports a few different arguments (less than the original) but for the most part delivers the same functionality
+
 #!/usr/bin/python
 
 import random, sys
